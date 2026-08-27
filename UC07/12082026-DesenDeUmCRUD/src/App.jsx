@@ -8,7 +8,7 @@ import './App.css'
 
 function App() {
 
-  const animes = [
+  const animess = [
     {
       id: 1,
       animeTitle: "Naruto",
@@ -71,57 +71,43 @@ function App() {
     }
   ];
 
-  console.log(animes);
+  console.log(animess);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [animes, setAnimes] = useState([]);
 
-
-
-  const filteredAnimes = animes.filter(anime => {
-    const idMatch = anime.id !== "" && anime.id === Number(searchQuery);
-    const animeTitleMatch = anime.animeTitle.toLocaleLowerCase().includes(searchQuery.toLowerCase());
-    const releaseDatematch = anime.releaseDate.toLocaleLowerCase().includes(searchQuery.toLowerCase());
-    const releaseStatusMatch = anime.releaseStatus.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
+  localStorage.setItem('animes', JSON.stringify(animes));
 
 
-    return idMatch || animeTitleMatch || releaseDatematch || releaseStatusMatch
-
-  });
 
 
 
 
   return (
-    <>
-      <form action="">
-        <label htmlFor="searchBar"></label>
-        <input type="text" name="searchBar" id="searchBar" placeholder='Search by Id' onChange={(e) => setSearchQuery(e.target.value)}/>
+    <Fragment>
 
-        {/* <button type="button" id='button' >Pequisar</button> */}
+      <h1>Product CRUD</h1>
+      <p>My React CRUD with Local Storage</p>
+
+      <form action="">
+        <label htmlFor="animeName"></label>
+        <input type="text" name="animeName" id="animeName" placeholder='Write the name of anime... '/>
+
+        <label htmlFor="">Release Date</label>
+        <input type="text" name="" id=""/>
+
+        <label htmlFor="">Release Status</label>
+        <input type="text" name="" id="" />
+
+        <button type="submmit" id='addBtn' >Add Anime</button>
 
       </form>
 
       <section>
-        <h2>Animes Informations</h2>
 
-        <div id="result">
-          <ul>
-            {filteredAnimes.length > 0 ? (filteredAnimes.map(user => {
 
-              return <li key={user.id}>
-                <p>Title: {user.animeTitle}</p>
-                <p>Release Date: {user.releaseDate}</p>
-                <p>Release Status: {user.releaseStatus}</p>
-              </li>
 
-            })) : (
-              <p>No results found...</p>
-            )}
-
-          </ul>
-        </div>
       </section>
-    </>
+    </Fragment>
 
   )
 }
