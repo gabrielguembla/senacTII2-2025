@@ -2,9 +2,9 @@ import { Fragment, useState } from 'react'
 
 import './App.css'
 
-const searchBar = window.document.querySelector("#searchBar");
-const btn = window.document.querySelector("#btn");
-const result = window.document.querySelector("#result");
+// const searchBar = window.document.querySelector("#searchBar");
+// const btn = window.document.querySelector("#btn");
+// const result = window.document.querySelector("#result");
 
 function App() {
 
@@ -77,10 +77,14 @@ function App() {
 
 
 
-  const filterAnimes = animes.filter(anime => {
+  const filteredAnimes = animes.filter(anime => {
+    const idMatch = anime.id !== "" && anime.id === Number(searchQuery);
+    const animeTitleMatch = anime.animeTitle.toLocaleLowerCase().includes(searchQuery.toLowerCase());
+    const releaseDatematch = anime.releaseDate.toLocaleLowerCase().includes(searchQuery.toLowerCase());
+    const releaseStatusMatch = anime.releaseStatus.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase())
 
-    return anime.id.includes(Number(searchQuery));
 
+    return idMatch || animeTitleMatch || releaseDatematch || releaseStatusMatch
 
   });
 
@@ -101,21 +105,23 @@ function App() {
         <h2>Animes Informations</h2>
 
         <div id="result">
+          <ul>
+            {filteredAnimes.length > 0 ? (filteredAnimes.map(user => {
 
+              return <li key={user.id}>
+                <p>Title: {user.animeTitle}</p>
+                <p>Release Date: {user.releaseDate}</p>
+                <p>Release Status: {user.releaseStatus}</p>
+              </li>
 
+            })) : (
+              <p>No results found...</p>
+            )}
+
+          </ul>
         </div>
-
-
-
       </section>
-
-
-
     </>
-
-
-
-
 
   )
 }
