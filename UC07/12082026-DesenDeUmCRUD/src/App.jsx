@@ -12,74 +12,131 @@ function App() {
     {
       id: 1,
       animeTitle: "Naruto",
-      releaseDate: "2002",
-      releaseStatus: "Finished"
+      animeReleaseDate: "2002",
+      animeReleaseStatus: "Finished"
     },
     {
       id: 2,
       animeTitle: "One Piece",
-      releaseDate: "1999",
-      releaseStatus: "Ongoing"
+      animeReleaseDate: "1999",
+      animeReleaseStatus: "Ongoing"
     },
     {
       id: 3,
       animeTitle: "Dragon Ball Z",
-      releaseDate: "1989",
-      releaseStatus: "Finished"
+      animeReleaseDate: "1989",
+      animeReleaseStatus: "Finished"
     },
     {
       id: 4,
       animeTitle: "Attack on Titan",
-      releaseDate: "2013",
-      releaseStatus: "Finished"
+      animeReleaseDate: "2013",
+      animeReleaseStatus: "Finished"
     },
     {
       id: 5,
       animeTitle: "Demon Slayer",
-      releaseDate: "2019",
-      releaseStatus: "Ongoing"
+      animeReleaseDate: "2019",
+      animeReleaseStatus: "Ongoing"
     },
     {
       id: 6,
       animeTitle: "My Hero Academia",
-      releaseDate: "2016",
-      releaseStatus: "Finished"
+      animeReleaseDate: "2016",
+      animeReleaseStatus: "Finished"
     },
     {
       id: 7,
       animeTitle: "Jujutsu Kaisen",
-      releaseDate: "2020",
-      releaseStatus: "Ongoing"
+      animeReleaseDate: "2020",
+      animeReleaseStatus: "Ongoing"
     },
     {
       id: 8,
       animeTitle: "Death Note",
-      releaseDate: "2006",
-      releaseStatus: "Finished"
+      animeReleaseDate: "2006",
+      animeReleaseStatus: "Finished"
     },
     {
       id: 9,
       animeTitle: "Fullmetal Alchemist: Brotherhood",
-      releaseDate: "2009",
-      releaseStatus: "Finished"
+      animeReleaseDate: "2009",
+      animeReleaseStatus: "Finished"
     },
     {
       id: 10,
       animeTitle: "Hunter x Hunter",
-      releaseDate: "2011",
-      releaseStatus: "Hiatus"
+      animeReleaseDate: "2011",
+      animeReleaseStatus: "Hiatus"
     }
   ];
 
-  console.log(animess);
+  // console.log(animess);
 
-  const [animes, setAnimes] = useState([]);
+  const [animes, setAnimes] = useState(animess);
 
-  localStorage.setItem('animes', JSON.stringify(animes));
+  // localStorage.setItem('animes', JSON.stringify(animes));
+
+  const [animeId, setAnimeId] = useState("");
+  const [animeTitle, setAnimeTitle] = useState("");
+  const [animeReleaseDate, setAnimeReleaseDate] = useState("");
+  const [animeReleaseStatus, setAnimeReleaseStatus] = useState("");
+
+
+  // function handleSubmit1(event) {
+  //   event.preventDefault();
+
+  //   const newAnime = [
+  //     ...animess,
+  //     {
+  //       id: Date.now(),
+  //       animeTitle: animeTitle,
+  //       releaseDate: animeReleaseDate,
+  //       releaseStatus: animeReleaseStatus,
+
+
+  //     }
+
+  //   ]
+
+  //   setAnimes([newAnime])
+
+  //   console.log(newAnime);
+  //   console.log(animes);
 
 
 
+  // };
 
+function handleSubmit2(event) {
+  event.preventDefault();
+  const newAnime = {
+    
+    animeId: animeId,
+    animeTitle: animeTitle,
+    animeReleaseDate: animeReleaseDate,
+    animeReleaseStatus: animeReleaseStatus
+
+  };
+
+  setAnimes([...animes, newAnime]);
+
+  console.log(newAnime);
+  console.log(animes);
+
+}
+
+function handleDelete(id) {
+  const updatedAnimes = animes.filter(
+    anime => anime.animeId !== id
+    
+    );
+
+    setAnimes(updatedAnimes);
+    console.log(animes);
+    
+
+}
 
 
   return (
@@ -88,15 +145,39 @@ function App() {
       <h1>Product CRUD</h1>
       <p>My React CRUD with Local Storage</p>
 
-      <form action="">
-        <label htmlFor="animeName"></label>
-        <input type="text" name="animeName" id="animeName" placeholder='Write the name of anime... '/>
+      <form onSubmit={handleSubmit2}>
+        <label htmlFor="animeId">Anime's Id</label>
+        <input type="text" 
+        name="animeId" 
+        id="animeId" 
+        placeholder='Write the name of anime... '
+        value={animeId}
+        onChange={(event) => setAnimeId(event.target.value)}
+        />
 
-        <label htmlFor="">Release Date</label>
-        <input type="text" name="" id=""/>
+        <label htmlFor="animeName">Anime Name</label>
+        <input type="text" 
+        name="animeName" 
+        id="animeName" 
+        placeholder='Write the name of anime... '
+        value={animeTitle}
+        onChange={event => setAnimeTitle(event.target.value)}/>
 
-        <label htmlFor="">Release Status</label>
-        <input type="text" name="" id="" />
+        <label htmlFor="releaseDate">Release Date</label>
+        <input type="text" 
+        name="releaseDate" 
+        id="releaseDate"
+        placeholder='Types release date...'
+        value={animeReleaseDate}
+        onChange={event => setAnimeReleaseDate(event.target.value)}/>
+
+        <label htmlFor="releaseStatus">Release Status</label>
+        <input type="text" 
+        name="releaseStatus" 
+        id="releaseStatus"
+        placeholder='Types release status...'
+        value={animeReleaseStatus}
+        onChange={event => setAnimeReleaseStatus(event.target.value)}/>
 
         <button type="submmit" id='addBtn' >Add Anime</button>
 
@@ -104,7 +185,21 @@ function App() {
 
       <section>
 
+        <h2>Product List</h2>
+        {animes.map(anime => (
+          <section key={anime.id}>
+            <h3>{anime.animeTitle}</h3>
+            <p>{anime.animeReleaseDate}</p>
+            <p>{anime.animeReleaseStatus}</p>
 
+
+            <button type="button" onClick={() => handleDelete(anime.animeId)}>
+              Delete Button
+            </button>
+          </section>
+
+        ))}
+          
 
       </section>
     </Fragment>
