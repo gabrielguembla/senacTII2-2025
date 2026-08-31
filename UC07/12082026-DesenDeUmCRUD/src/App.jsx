@@ -77,10 +77,11 @@ function App() {
 
   // localStorage.setItem('animes', JSON.stringify(animes));
 
-  const [animeId, setAnimeId] = useState("");
+  const [id, setId] = useState("");
   const [animeTitle, setAnimeTitle] = useState("");
   const [animeReleaseDate, setAnimeReleaseDate] = useState("");
   const [animeReleaseStatus, setAnimeReleaseStatus] = useState("");
+  const [editingAnime, setEditingAnime] = useState(null);
 
 
   // function handleSubmit1(event) {
@@ -108,84 +109,124 @@ function App() {
 
   // };
 
-function handleSubmit2(event) {
-  event.preventDefault();
-  const newAnime = {
-    
-    animeId: animeId,
-    animeTitle: animeTitle,
-    animeReleaseDate: animeReleaseDate,
-    animeReleaseStatus: animeReleaseStatus
+  function handleSubmit2(event) {
+    event.preventDefault();
 
-  };
+    if (editingAnime) {
+      const updatedAnime = animes.map((anime) =>
+        anime.id === editingAnime.id
+          ? {
+            ...anime,
+            animeTitle: animeTitle,
+            animeReleaseDate: animeReleaseDate,
+            animeReleaseStatus: animeReleaseStatus
+          } : anime
 
-  setAnimes([...animes, newAnime]);
+      );
 
-  console.log(newAnime);
-  console.log(animes);
 
-}
+      setAnimes(updatedAnime);
+      setEditingAnime(null);
+      console.log(animes);  // Entender o porquê desse console.log não está saindo atualizado
+      console.log(animes);// Entender o porquê desse console.log não está saindo atualizado
 
-function handleDelete(id) {
-  const updatedAnimes = animes.filter(
-    anime => anime.animeId !== id
-    
+    } else {
+
+      const newAnime = {
+
+        id: id,
+        animeTitle: animeTitle,
+        animeReleaseDate: animeReleaseDate,
+        animeReleaseStatus: animeReleaseStatus
+
+      };
+
+      setAnimes([...animes, newAnime]);
+
+      console.log(newAnime);
+      console.log(animes);// Entender também do porquê desse console.log não está saindo atualizado
+
+    }
+    console.log(animes);
+    setId("");
+    setAnimeTitle("");
+    setAnimeReleaseDate("");
+    setAnimeReleaseStatus("");
+
+  }
+
+  function handleDelete(id) {
+    const updatedAnimes = animes.filter(
+      anime => anime.id !== id
+
     );
 
     setAnimes(updatedAnimes);
     console.log(animes);
-    
 
-}
+
+  }
+
+  function handleEdit(anime) {
+    setId(anime.id);
+    setAnimeTitle(anime.animeTitle);
+    setAnimeReleaseDate(anime.animeReleaseDate);
+    setAnimeReleaseStatus(anime.animeReleaseStatus);
+
+    setEditingAnime(anime);
+
+
+
+  }
 
 
   return (
     <Fragment>
 
-      <h1>Product CRUD</h1>
+      <h1>Anime CRUD</h1>
       <p>My React CRUD with Local Storage</p>
 
       <form onSubmit={handleSubmit2}>
         <label htmlFor="animeId">Anime's Id</label>
-        <input type="text" 
-        name="animeId" 
-        id="animeId" 
-        placeholder='Write the name of anime... '
-        value={animeId}
-        onChange={(event) => setAnimeId(event.target.value)}
+        <input type="text"
+          name="id"
+          id="id"
+          placeholder='Write the name of anime... '
+          value={id}
+          onChange={(event) => setId(Number(event.target.value))}
         />
 
         <label htmlFor="animeName">Anime Name</label>
-        <input type="text" 
-        name="animeName" 
-        id="animeName" 
-        placeholder='Write the name of anime... '
-        value={animeTitle}
-        onChange={event => setAnimeTitle(event.target.value)}/>
+        <input type="text"
+          name="animeName"
+          id="animeName"
+          placeholder='Write the name of anime... '
+          value={animeTitle}
+          onChange={event => setAnimeTitle(event.target.value)} />
 
         <label htmlFor="releaseDate">Release Date</label>
-        <input type="text" 
-        name="releaseDate" 
-        id="releaseDate"
-        placeholder='Types release date...'
-        value={animeReleaseDate}
-        onChange={event => setAnimeReleaseDate(event.target.value)}/>
+        <input type="text"
+          name="releaseDate"
+          id="releaseDate"
+          placeholder='Types release date...'
+          value={animeReleaseDate}
+          onChange={event => setAnimeReleaseDate(event.target.value)} />
 
         <label htmlFor="releaseStatus">Release Status</label>
-        <input type="text" 
-        name="releaseStatus" 
-        id="releaseStatus"
-        placeholder='Types release status...'
-        value={animeReleaseStatus}
-        onChange={event => setAnimeReleaseStatus(event.target.value)}/>
+        <input type="text"
+          name="releaseStatus"
+          id="releaseStatus"
+          placeholder='Types release status...'
+          value={animeReleaseStatus}
+          onChange={event => setAnimeReleaseStatus(event.target.value)} />
 
-        <button type="submmit" id='addBtn' >Add Anime</button>
+        <button type="submmit" id='addBtn' > {(editingAnime) ? "Updating Anime" : "Add Anime"}</button>
 
       </form>
 
       <section>
 
-        <h2>Product List</h2>
+        <h2>Anime List</h2>
         {animes.map(anime => (
           <section key={anime.id}>
             <h3>{anime.animeTitle}</h3>
@@ -193,13 +234,19 @@ function handleDelete(id) {
             <p>{anime.animeReleaseStatus}</p>
 
 
-            <button type="button" onClick={() => handleDelete(anime.animeId)}>
-              Delete Button
+
+            <button type="button" onClick={() => handleEdit(anime)}>
+              Edit
             </button>
+
+            <button type="button" onClick={() => handleDelete(anime.id)}>
+              Delete
+            </button>
+
           </section>
 
         ))}
-          
+
 
       </section>
     </Fragment>
