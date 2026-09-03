@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "cardNumber": "CARD001",
+        "customerName": "Gabriel",
+        "balance": 50.00,
+        "status": "active"
+    },
+    {
+        "id": 2,
+        "cardNumber": "CARD002",
+        "customerName": "Maria",
+        "balance": 75.50,
+        "status": "active"
+    },
+    {
+        "id": 3,
+        "cardNumber": "CARD003",
+        "customerName": "João",
+        "balance": 20.00,
+        "status": "active"
+    },
+    {
+        "id": 4,
+        "cardNumber": "CARD004",
+        "customerName": "Ana",
+        "balance": 100.00,
+        "status": "inactive"
+    },
+    {
+        "id": 5,
+        "cardNumber": "CARD005",
+        "customerName": "Carlos",
+        "balance": 35.75,
+        "status": "active"
+    }
+]
